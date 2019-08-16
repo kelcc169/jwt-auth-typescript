@@ -15,8 +15,19 @@ const App: React.FC = () => {
   const [ token, setToken] = useState<string>('')
   const [ errorMessage, setErrorMessage ] = useState<string>('')
 
-  // checking for local token to validate user
-  function checkForLocalToken() {
+  function liftToken(token: string) {
+    setToken(token)
+  }
+
+  // log out of program
+  function logout(): void {
+    localStorage.removeItem('mernToken');
+    setToken('');
+    setUser({} as IUser);
+  }
+
+  // check for local token when loading OR when token changes.
+  useEffect(() => {
     var token = localStorage.getItem('mernToken');
     if (!token || token === 'undefined') {
       localStorage.removeItem('mernToken');
@@ -38,23 +49,7 @@ const App: React.FC = () => {
           }
         })
     }
-  }
-
-  function liftToken(token: string) {
-    setToken(token)
-  }
-
-  // log out of program
-  function logout(): void {
-    localStorage.removeItem('mernToken');
-    setToken('');
-    setUser({} as IUser);
-  }
-
-  // check for local token when loading OR when token changes.
-  useEffect(() => {
-    checkForLocalToken();
-  }, [token])
+  }, [token, errorMessage])
 
   var contents;
   if (Object.keys(user).length > 0) {

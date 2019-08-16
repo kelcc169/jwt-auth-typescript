@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { ILiftTokens } from './App';
+import { ISetTokens } from './App';
 import axios from 'axios';
 
-const Login: React.FC<ILiftTokens> = ({liftToken}) => {
+const Login: React.FC<ISetTokens> = ({setToken}) => {
   const [ email, setEmail ] = useState<string>('');
   const [ password, setPassword ] = useState<string>('');
   const [ message, setMessage ] = useState<string>('');
@@ -32,7 +32,7 @@ const Login: React.FC<ILiftTokens> = ({liftToken}) => {
         console.log('i found this')
         localStorage.setItem('mernToken', res.data.token);
         setMessage('')
-        liftToken(res.data.token);
+        setToken(res.data.token);
       }
     }).catch(err => {
       setMessage('Maximum login attempts exceeded. Please try again later')

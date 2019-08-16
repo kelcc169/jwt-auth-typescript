@@ -6,18 +6,14 @@ import './App.css';
 
 import { IUser } from '../../src/models/user'
 
-export interface ILiftTokens {
-  liftToken: Function;
+export interface ISetTokens {
+  setToken: Function;
 }
 
 const App: React.FC = () => {
   const [ user, setUser ] = useState<IUser>({} as IUser)
   const [ token, setToken] = useState<string>('')
   const [ errorMessage, setErrorMessage ] = useState<string>('')
-
-  function liftToken(token: string) {
-    setToken(token)
-  }
 
   // log out of program
   function logout(): void {
@@ -63,8 +59,8 @@ const App: React.FC = () => {
     contents = (
       <>
         <p>Please Log In or Sign Up</p>
-        <Login liftToken={liftToken} />
-        <Signup liftToken={liftToken} /> 
+        <Login setToken={setToken} />
+        <Signup setToken={setToken} /> 
       </>
     )
   }

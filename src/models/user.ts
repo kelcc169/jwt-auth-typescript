@@ -34,9 +34,9 @@ userSchema.set('toObject', {
   }
 })
 
-userSchema.pre("save", function(next) {
+userSchema.pre('save', function(next) {
   console.log(this.get('password'));
-  if(!this.isModified("password")) {
+  if(!this.isModified('password')) {
       return next();
   }
   let plaintext = this.get('password');
@@ -44,7 +44,7 @@ userSchema.pre("save", function(next) {
   next();
 });
 
-userSchema.methods.authenticated = function(password) {
+userSchema.methods.authenticated = function(password: string) {
   let plaintext = this.get('password');
   return bcrypt.compareSync(password, plaintext)
 }

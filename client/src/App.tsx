@@ -6,18 +6,22 @@ import './App.css';
 
 import { IUser } from '../../src/models/user'
 
+export interface ILiftTokens {
+  liftToken: Function;
+}
+
 const App: React.FC = () => {
   const [ user, setUser ] = useState<IUser>({} as IUser)
   const [ token, setToken] = useState<string>('')
   const [ errorMessage, setErrorMessage ] = useState<string>('')
-  
-  //setting user to null
+
+  // checking for local token to validate user
   function checkForLocalToken() {
     var token = localStorage.getItem('mernToken');
     if (!token || token === 'undefined') {
       localStorage.removeItem('mernToken');
-      setToken('')
-      setUser({} as IUser)
+      setToken('');
+      setUser({} as IUser);
     } else {
       axios.post('/auth/me/from/token', {token})
         .then(res => {
@@ -25,9 +29,10 @@ const App: React.FC = () => {
             localStorage.removeItem('mernToken');
             setToken('');
             setUser({} as IUser);
-            setErrorMessage(res.data.message)
+            setErrorMessage(res.data.message);
+            console.log(errorMessage)
           } else {
-            localStorage.setItem('mernToke', res.data.token);
+            localStorage.setItem('mernToken', res.data.token);
             setToken(res.data.token);
             setUser(res.data.user);
           }
@@ -35,15 +40,21 @@ const App: React.FC = () => {
     }
   }
 
+  function liftToken(token: string) {
+    setToken(token)
+  }
+
+  // log out of program
   function logout(): void {
     localStorage.removeItem('mernToken');
     setToken('');
-    setUser({} as IUser)
+    setUser({} as IUser);
   }
 
+  // check for local token when loading OR when token changes.
   useEffect(() => {
-    checkForLocalToken()
-  }, [])
+    checkForLocalToken();
+  }, [token])
 
   var contents;
   if (Object.keys(user).length > 0) {
@@ -56,9 +67,9 @@ const App: React.FC = () => {
   } else {
     contents = (
       <>
-        <p>Please sign up or log in</p>
-        <Login /><br />
-        <Signup />
+        <p>Please Log In or Sign Up</p>
+        <Login liftToken={liftToken} />
+        <Signup liftToken={liftToken} /> 
       </>
     )
   }

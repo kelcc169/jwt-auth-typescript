@@ -6,7 +6,7 @@ import { IUser } from '../models/user';
 import jwt from 'jsonwebtoken';
 
 router.post('/signup', (req, res) => {
-  User.findOne({email: req.body.email}, (err, user) => {
+  User.findOne({email: req.body.email}, (err, user: IUser) => {
     if (user) {
       res.json({type: 'error', message: 'Email already exists'})
     } else {
@@ -50,7 +50,7 @@ router.post('/me/from/token', (req, res) => {
   if (!token) {
     res.json({type: 'error', message: 'You must submit a valid token'})
   } else {
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    jwt.verify(token, process.env.JWT_SECRET, (err, user: IUser) => {
       if (err) {
         res.json({type: 'error', message: 'Invalid token. Please log in again.'})
       } else {

@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import axios from 'axios';
 import Login from './Login';
 import Signup from './Signup';
 import './App.css';
 
-import { IUser } from '../../src/models/user'
-
-export interface ISetTokens {
-  setToken: Function;
-}
+import { IUser } from './react-app-env';
 
 const App: React.FC = () => {
   const [ user, setUser ] = useState<IUser>({} as IUser)
@@ -57,11 +54,11 @@ const App: React.FC = () => {
     )
   } else {
     contents = (
-      <>
+      <Router>
         <p>Please Log In or Sign Up</p>
-        <Login setToken={setToken} />
-        <Signup setToken={setToken} /> 
-      </>
+        <Route path='/login' render={(props) => <Login setToken={setToken} {...props} /> } />
+        <Route path='/signup' render={(props) => <Signup setToken={setToken} {...props} /> } />        
+      </Router>
     )
   }
 

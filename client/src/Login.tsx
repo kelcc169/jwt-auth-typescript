@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { ISetTokens } from './App';
+import { ISetTokens } from './react-app-env';
 import axios from 'axios';
 
-const Login: React.FC<ISetTokens> = ({setToken}) => {
+const Login: React.FC<ISetTokens> = ({setToken, history}) => {
   const [ email, setEmail ] = useState<string>('');
   const [ password, setPassword ] = useState<string>('');
   const [ message, setMessage ] = useState<string>('');
@@ -36,6 +36,8 @@ const Login: React.FC<ISetTokens> = ({setToken}) => {
       }
     }).catch(err => {
       setMessage('Maximum login attempts exceeded. Please try again later')
+    }).finally(() => {
+      history.push('/library')
     })
   }
 
